@@ -1,3 +1,5 @@
+MICHIEL MEEUS
+
 # Storingsmelder
 
 Een klein meldingensysteem voor storingen. Je meldt een storing via een
@@ -27,23 +29,23 @@ wat je in dit vak leert.
 
 ## Wat de applicatie nodig heeft
 
-| | |
-|---|---|
-| Python | 3.11 of hoger |
-| Pakketten | staan in `requirements.txt` |
-| Poort | 8000, tenzij je `PORT` anders instelt |
+|           |                                       |
+| --------- | ------------------------------------- |
+| Python    | 3.11 of hoger                         |
+| Pakketten | staan in `requirements.txt`           |
+| Poort     | 8000, tenzij je `PORT` anders instelt |
 
 ## Instellingen
 
 Alles wordt geregeld met environment variables. Er staat niets vast in de code,
 en er is geen configuratiebestand dat je moet aanpassen.
 
-| Variabele | Standaard | Wat het doet |
-|---|---|---|
-| `DATABASE_URL` | leeg | Leeg betekent opslaan in een SQLite-bestand. Vul je hier een PostgreSQL-adres in, dan gebruikt de applicatie die database |
-| `SQLITE_PAD` | `/data/storingen.db` | Waar het SQLite-bestand komt te staan |
-| `APP_TITEL` | `Storingsmelder` | De titel bovenaan de pagina |
-| `PORT` | `8000` | De poort waarop de applicatie luistert |
+| Variabele      | Standaard            | Wat het doet                                                                                                              |
+| -------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL` | leeg                 | Leeg betekent opslaan in een SQLite-bestand. Vul je hier een PostgreSQL-adres in, dan gebruikt de applicatie die database |
+| `SQLITE_PAD`   | `/data/storingen.db` | Waar het SQLite-bestand komt te staan                                                                                     |
+| `APP_TITEL`    | `Storingsmelder`     | De titel bovenaan de pagina                                                                                               |
+| `PORT`         | `8000`               | De poort waarop de applicatie luistert                                                                                    |
 
 ### Twee standen
 
@@ -80,11 +82,11 @@ later in het semester nog van pas.
 
 ## Wat je er dit semester mee doet
 
-| Blok | Wat je doet |
-|---|---|
-| Week 1 tot 4 | Je zet deze applicatie in een container en laat ze samen met een database draaien |
-| Week 5 tot 9 | Je zet diezelfde applicatie op een Kubernetes-cluster en maakt ze bereikbaar in je browser |
-| Week 10 tot 11 | Je laat een pipeline het image bouwen en klaarzetten |
+| Blok           | Wat je doet                                                                                |
+| -------------- | ------------------------------------------------------------------------------------------ |
+| Week 1 tot 4   | Je zet deze applicatie in een container en laat ze samen met een database draaien          |
+| Week 5 tot 9   | Je zet diezelfde applicatie op een Kubernetes-cluster en maakt ze bereikbaar in je browser |
+| Week 10 tot 11 | Je laat een pipeline het image bouwen en klaarzetten                                       |
 
 Je begint dus nooit opnieuw. Elke opdracht bouwt verder op de vorige.
 

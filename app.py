@@ -123,7 +123,7 @@ def overzicht():
     meldingen = alle_meldingen()
     return render_template(
         "overzicht.html",
-        titel=APP_TITEL,
+        titel="Mijn Mooie Storingsmelder",
         meldingen=meldingen,
         prioriteiten=PRIORITEITEN,
         open_aantal=sum(1 for m in meldingen if m["status"] == "open"),

@@ -1,99 +1,70 @@
-MICHIEL MEEUS
+# Storingsmelder - Labo 3: Applicatie en Database
 
-# Storingsmelder
+Dit project bevat de Storingsmelder-applicatie, gekoppeld aan een PostgreSQL 17 database via Docker Compose. De stack is voorzien van persistentie via volumes, een healthcheck voor gesynchroniseerde opstart en configuratie via omgevingsvariabelen.
 
-Een klein meldingensysteem voor storingen. Je meldt een storing via een
-formulier, je ziet de openstaande meldingen in een lijst, en je sluit ze af als
-ze opgelost zijn.
+## Vereisten
 
-Deze applicatie is het startpunt voor **Cloud computing (B-UCLL-MGN13A)**. Je
-werkt er het hele semester mee. De applicatie zelf verandert bijna niet, wat
-verandert is hoe en waar ze draait.
+- Git
+- Docker Desktop (inclusief Docker Compose)
 
----
+## Installatie en Opstarten
 
-## Wat er in deze repo zit
+Volg onderstaande stappen om het project lokaal te clonen en op te starten:
 
-```
-app.py              de applicatie
-requirements.txt    de pakketten die ze nodig heeft
-templates/          de HTML van de webpagina
-```
+### 1. Repository clonen
 
-## Wat er bewust niet in zit
+Clone de repository en open de projectmap:
 
-Geen Dockerfile en geen compose-bestand. Die schrijf je zelf, dat is precies
-wat je in dit vak leert.
+git clone https://github.com/migelangelo9/cloud-computing.git
+cd cloud-computing
 
----
+### 2. Omgevingsvariabelen instellen (.env)
 
-## Wat de applicatie nodig heeft
+Het bestand met inloggegevens (.env) staat niet in Git vanwege beveiligingsredenen. Er is een voorbeeldbestand (.env.example) aanwezig.
 
-|           |                                       |
-| --------- | ------------------------------------- |
-| Python    | 3.11 of hoger                         |
-| Pakketten | staan in `requirements.txt`           |
-| Poort     | 8000, tenzij je `PORT` anders instelt |
+Maak een kopie van .env.example en noem deze .env:
 
-## Instellingen
+In PowerShell:
+Copy-Item .env.example .env
 
-Alles wordt geregeld met environment variables. Er staat niets vast in de code,
-en er is geen configuratiebestand dat je moet aanpassen.
+Vul in het nieuw aangemaakte .env bestand de gewenste database-inloggegevens in:
+POSTGRES_USER=student
+POSTGRES_PASSWORD=t
+POSTGRES_DB=storingsmelder
 
-| Variabele      | Standaard            | Wat het doet                                                                                                              |
-| -------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `DATABASE_URL` | leeg                 | Leeg betekent opslaan in een SQLite-bestand. Vul je hier een PostgreSQL-adres in, dan gebruikt de applicatie die database |
-| `SQLITE_PAD`   | `/data/storingen.db` | Waar het SQLite-bestand komt te staan                                                                                     |
-| `APP_TITEL`    | `Storingsmelder`     | De titel bovenaan de pagina                                                                                               |
-| `PORT`         | `8000`               | De poort waarop de applicatie luistert                                                                                    |
+### 3. Services starten via Docker Compose
 
-### Twee standen
+Start de containers op de achtergrond:
 
-De applicatie draait met of zonder aparte database.
+docker compose up -d
 
-**Zonder `DATABASE_URL`** schrijft ze naar een SQLite-bestand. Dat werkt meteen
-en je hebt niets anders nodig. Let op waar dat bestand terechtkomt, want daar
-kom je later op terug.
+De webapplicatie start pas op nadat PostgreSQL via de interne healthcheck (pg_isready) heeft bevestigd dat TCP-verbindingen worden geaccepteerd.
 
-**Met `DATABASE_URL`** praat ze met PostgreSQL. Bijvoorbeeld:
+Controleer de status van de containers:
 
-```
-DATABASE_URL=postgresql://storing:geheim@db:5432/storingen
-```
+docker compose ps
 
-Je hoeft de tabel niet zelf aan te maken. De applicatie doet dat bij het
-opstarten als ze nog niet bestaat.
+De database hoort de status "Up (healthy)" te hebben en de web-container de status "Up".
 
----
+### 4. Applicatie gebruiken
 
-## Controleren of ze draait
+Open een browser en ga naar:
+http://localhost:8000
 
-Naast de gewone pagina is er een adres dat kort antwoordt of alles in orde is:
+Hier kunnen meldingen worden bekeken en toegevoegd. Deze worden persistent opgeslagen in PostgreSQL.
 
-```
-GET /health
-```
+## Afsluiten en Opruimen
 
-Draait alles, dan krijg je `{"status": "ok", ...}` met code 200. Kan de
-applicatie haar database niet bereiken, dan krijg je code 503. Dat adres komt
-later in het semester nog van pas.
+- Containers stoppen en netwerk verwijderen (met behoud van data in het named volume):
+  docker compose down
 
----
+- Containers en named volumes volledig wissen (schone herstart):
+  docker compose down -v
 
-## Wat je er dit semester mee doet
+## Container Registry
 
-| Blok           | Wat je doet                                                                                |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| Week 1 tot 4   | Je zet deze applicatie in een container en laat ze samen met een database draaien          |
-| Week 5 tot 9   | Je zet diezelfde applicatie op een Kubernetes-cluster en maakt ze bereikbaar in je browser |
-| Week 10 tot 11 | Je laat een pipeline het image bouwen en klaarzetten                                       |
+Het image voor de webapplicatie is publiek beschikbaar op de GitHub Container Registry (GHCR):
+ghcr.io/migelangelo9/storingsmelder:1.0
 
-Je begint dus nooit opnieuw. Elke opdracht bouwt verder op de vorige.
-
----
-
-## Deze repo is van jou
-
-Je hebt hem gemaakt vanaf het sjabloon, dus dit is jouw kopie. Werk erin, commit
-elke les, en push. Indienen doe je met de link naar een commit. Hoe dat precies
-gaat, staat in de opdrachtbundel op Toledo.
+Dit image kan rechtstreeks worden binnengehaald met:
+docker pull ghcr.io/migelangelo9/storingsmelder:1.0
